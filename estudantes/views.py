@@ -2,14 +2,12 @@ from django.shortcuts import redirect, render
 from django.http import HttpResponse
 
 from estudantes.forms import EstudanteForm
+from estudantes.models import Estudante
 
 #-- O arquivo views é onde definimos as nossas regras de negocios
 
 #-- método/função para listagem
 #-- de estudantes
-
-def listarEstudantes(request):
-    return HttpResponse('<h2> Olá estudantes, está é a listagem </h2>')
 
 def editarEstudantes(request):
     return HttpResponse('<h2> Editando o estudante fulano de tal </h2>')
@@ -26,3 +24,11 @@ def adicionarEstudante(request):
     }
 
     return render(request, 'estudante.html', dicionario)
+
+def listarEstudantes(request):
+    estudantes = Estudante.objects.all()
+    contexto = {
+        'listaEst' : estudantes,
+    }
+
+    return render(request, 'listagem.html', contexto)
