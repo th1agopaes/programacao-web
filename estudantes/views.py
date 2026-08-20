@@ -1,5 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.http import HttpResponse
+
+from estudantes.forms import EstudanteForm
 
 #-- O arquivo views é onde definimos as nossas regras de negocios
 
@@ -11,3 +13,16 @@ def listarEstudantes(request):
 
 def editarEstudantes(request):
     return HttpResponse('<h2> Editando o estudante fulano de tal </h2>')
+
+#-- regra de negócio para adicionar estudante
+def adicionarEstudante(request):
+    form = EstudanteForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        return redirect('/')
+
+    dicionario = {
+        'form' : form
+    }
+
+    return render(request, 'estudante.html', dicionario)
